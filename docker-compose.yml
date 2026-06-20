@@ -1,0 +1,41 @@
+services:
+  # Servidor Web / Proxy Reverso
+  nginx:
+    image: nginx:alpine
+    container_name: sistema_login_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+
+  # Aplicação Flask (MVC + Repository)
+  app:
+    build: .
+    container_name: sistema_login_app
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=production
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=senha_secreta
+      - DB_NAME=sistema_login
+    depends_on:
+      - db
+
+  # Banco de Dados MySQL
+  db:
+    image: mysql:8.0
+    container_name: sistema_login_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: senha_secreta
+      MYSQL_DATABASE: sistema_login
+    # A seção ports foi removida daqui para não brigar com o Windows
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:

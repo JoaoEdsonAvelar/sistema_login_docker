@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+
+<div class="card">
+    <div class="card-body">
+        <h2>Bem-vindo {{ nome }}</h2>
+        <hr>
+        <p>Login realizado com sucesso.</p>
+        <a href="/usuarios">Ver usuários cadastrados</a>
+        <a href="/logout"  class="btn btn-danger">Sair</a>
+    </div>
+</div>
+
+{% endblock %}
